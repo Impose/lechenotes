@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lechenotes — Setup</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Google Sans', Roboto, sans-serif; background: #f8f9fa; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.15); padding: 40px 36px; width: 100%; max-width: 380px; }
+    .logo { font-size: 22px; font-weight: 500; color: #202124; margin-bottom: 6px; }
+    .logo span { color: #fbbc04; }
+    .subtitle { font-size: 13px; color: #5f6368; margin-bottom: 28px; }
+    label { display: block; font-size: 13px; color: #3c4043; margin-bottom: 4px; }
+    input { width: 100%; border: 1px solid #dadce0; border-radius: 4px; padding: 10px 12px; font-size: 14px; margin-bottom: 16px; outline: none; }
+    input:focus { border-color: #1a73e8; }
+    .row { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+    .row input[type="checkbox"] { width: auto; margin: 0; }
+    .row label { margin: 0; }
+    button { width: 100%; background: #1a73e8; color: #fff; border: none; border-radius: 4px; padding: 11px; font-size: 14px; font-weight: 500; cursor: pointer; }
+    button:hover { background: #1765cc; }
+    .error { color: #d93025; font-size: 13px; margin-top: 12px; display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">Leche<span>notes</span></div>
+    <div class="subtitle">Create your admin account to get started.</div>
+    <label for="username">Username</label>
+    <input type="text" id="username" autocomplete="username" autocapitalize="off">
+    <label for="password">Password (min 8 characters)</label>
+    <input type="password" id="password" autocomplete="new-password" minlength="8">
+    <button id="submitBtn">Create account</button>
+    <div class="error" id="error"></div>
+  </div>
+  <script>
+    document.getElementById('submitBtn').addEventListener('click', async () => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const err = document.getElementById('error');
+      err.style.display = 'none';
+      if (!username || !password) { err.textContent = 'Both fields are required.'; err.style.display = 'block'; return; }
+      const res = await fetch('/api/setup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      if (res.ok) { window.location = '/'; return; }
+      const data = await res.json().catch(() => ({}));
+      err.textContent = data.error || 'Setup failed.';
+      err.style.display = 'block';
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('submitBtn').click(); });
+  </script>
+</body>
+</html>

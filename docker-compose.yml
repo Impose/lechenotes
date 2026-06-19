@@ -1,0 +1,11 @@
+services:
+  lechenotes:
+    image: ghcr.io/impose/lechenotes:latest
+    container_name: lechenotes
+    restart: unless-stopped
+    ports:
+      - "3333:3333"
+    volumes:
+      - /path/to/data:/data
+    environment:
+      SESSION_SECRET: "change-this-to-a-random-string"  # openssl rand -hex 32

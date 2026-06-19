@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lechenotes — Admin</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Google Sans', Roboto, sans-serif; background: #f8f9fa; color: #202124; }
+    header { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 20px; font-weight: 500; text-decoration: none; color: #202124; }
+    .logo span { color: #fbbc04; }
+    .header-right { display: flex; align-items: center; gap: 12px; font-size: 14px; color: #5f6368; }
+    .header-right a { color: #1a73e8; text-decoration: none; font-size: 14px; }
+    main { max-width: 700px; margin: 32px auto; padding: 0 16px; }
+    h2 { font-size: 18px; font-weight: 500; margin-bottom: 20px; }
+    .card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.12); padding: 24px; margin-bottom: 28px; }
+    .card h3 { font-size: 15px; font-weight: 500; margin-bottom: 16px; }
+    .form-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+    .field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 130px; }
+    .field label { font-size: 12px; color: #5f6368; }
+    .field input { border: 1px solid #dadce0; border-radius: 4px; padding: 8px 10px; font-size: 14px; outline: none; background: #fff; color: #202124; }
+    .field input:focus { border-color: #1a73e8; }
+    .checkbox-row { display: flex; align-items: center; gap: 6px; padding-bottom: 2px; }
+    .checkbox-row label { font-size: 13px; color: #3c4043; }
+    button.primary { background: #1a73e8; color: #fff; border: none; border-radius: 4px; padding: 9px 18px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+    button.primary:hover { background: #1765cc; }
+    button.danger { background: #fff; color: #d93025; border: 1px solid #dadce0; border-radius: 4px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+    button.danger:hover { background: #fce8e6; border-color: #d93025; }
+    button.secondary { background: #fff; color: #1a73e8; border: 1px solid #dadce0; border-radius: 4px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+    button.secondary:hover { background: #e8f0fe; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 12px; color: #5f6368; font-weight: 500; padding: 0 8px 10px; }
+    td { padding: 10px 8px; border-top: 1px solid #f1f3f4; font-size: 14px; vertical-align: middle; }
+    .badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 10px; background: #e8f0fe; color: #1a73e8; font-weight: 500; }
+    .actions { display: flex; gap: 8px; }
+    .msg { font-size: 13px; margin-top: 10px; display: none; }
+    .msg.ok { color: #137333; }
+    .msg.err { color: #d93025; }
+    .reset-form { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f3f4; }
+    .reset-form .form-row { margin-top: 0; }
+
+    /* Dark mode */
+    body.dark { background: #202124; color: #e8eaed; }
+    body.dark header { background: #2d2e30; border-color: #3c4043; }
+    body.dark .logo { color: #e8eaed; }
+    body.dark .header-right { color: #9aa0a6; }
+    body.dark .card { background: #2d2e30; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+    body.dark .card h3 { color: #e8eaed; }
+    body.dark h2 { color: #e8eaed; }
+    body.dark th { color: #9aa0a6; }
+    body.dark td { border-color: #3c4043; color: #e8eaed; }
+    body.dark .field label { color: #9aa0a6; }
+    body.dark .field input { background: #3c4043; border-color: #5f6368; color: #e8eaed; }
+    body.dark .field input:focus { border-color: #8ab4f8; }
+    body.dark .checkbox-row label { color: #bdc1c6; }
+    body.dark button.danger { background: #2d2e30; border-color: #5f6368; }
+    body.dark button.danger:hover { background: #3c1f1f; border-color: #d93025; }
+    body.dark button.secondary { background: #2d2e30; border-color: #5f6368; }
+    body.dark button.secondary:hover { background: #1e2a3a; }
+    body.dark .reset-form { border-color: #3c4043; }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="logo" href="/">Leche<span>notes</span></a>
+    <div class="header-right">
+      <span id="headerUsername"></span>
+      <a href="/">← Back to notes</a>
+    </div>
+  </header>
+
+  <main>
+    <h2>User management</h2>
+
+    <div class="card">
+      <h3>Create user</h3>
+      <div class="form-row">
+        <div class="field">
+          <label>Username</label>
+          <input type="text" id="newUsername" autocapitalize="off" autocomplete="off">
+        </div>
+        <div class="field">
+          <label>Password (min 8 chars)</label>
+          <input type="password" id="newPassword" autocomplete="new-password" minlength="8">
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="newIsAdmin">
+          <label for="newIsAdmin">Admin</label>
+        </div>
+        <button class="primary" id="createBtn">Create</button>
+      </div>
+      <div class="msg" id="createMsg"></div>
+    </div>
+
+    <div class="card">
+      <h3>Import from Google Keep</h3>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;">Export your notes from <a href="https://takeout.google.com" target="_blank" style="color:#1a73e8;">Google Takeout</a> (select Keep only), then upload the zip file here. Trashed notes are skipped. Notes are imported to your account.</p>
+      <div class="form-row">
+        <div class="field">
+          <label>Google Takeout zip file</label>
+          <input type="file" id="importFile" accept=".zip">
+        </div>
+        <button class="primary" id="importBtn">Import</button>
+      </div>
+      <div class="msg" id="importMsg"></div>
+    </div>
+
+    <div class="card">
+      <h3>Users</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="userTable"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    let currentUserId = null;
+
+    async function api(method, path, body) {
+      const opts = { method, headers: {} };
+      if (body !== undefined) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
+      const res = await fetch(path, opts);
+      if (res.status === 401) { window.location = '/login.html'; return null; }
+      if (res.status === 403) { window.location = '/'; return null; }
+      return res.ok ? res.json() : res.json().then(d => Promise.reject(d.error || 'Error'));
+    }
+
+    function showMsg(el, text, isOk) {
+      el.textContent = text;
+      el.className = 'msg ' + (isOk ? 'ok' : 'err');
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 4000);
+    }
+
+    function renderUsers(users) {
+      const tbody = document.getElementById('userTable');
+      tbody.innerHTML = '';
+      users.forEach(u => {
+        const isSelf = u.id === currentUserId;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${u.username}</td>
+          <td>${u.is_admin ? '<span class="badge">Admin</span>' : 'User'}</td>
+          <td>
+            <div class="actions">
+              <button class="secondary" data-id="${u.id}" data-action="reset">Reset password</button>
+              ${!isSelf ? `<button class="secondary" data-id="${u.id}" data-action="role" data-admin="${u.is_admin}">${u.is_admin ? 'Demote' : 'Make admin'}</button>` : ''}
+              ${!isSelf ? `<button class="danger" data-id="${u.id}" data-action="delete">Delete</button>` : ''}
+            </div>
+            <div class="reset-form" id="reset-${u.id}">
+              <div class="form-row">
+                <div class="field">
+                  <label>New password (min 8 chars)</label>
+                  <input type="password" id="resetPw-${u.id}" autocomplete="new-password" minlength="8">
+                </div>
+                <button class="primary" data-id="${u.id}" data-action="save-reset">Save</button>
+              </div>
+              <div class="msg" id="resetMsg-${u.id}"></div>
+            </div>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('importBtn').addEventListener('click', async () => {
+      const file = document.getElementById('importFile').files[0];
+      const msg = document.getElementById('importMsg');
+      if (!file) { showMsg(msg, 'Select a zip file first.', false); return; }
+      const btn = document.getElementById('importBtn');
+      btn.disabled = true;
+      btn.textContent = 'Importing...';
+      try {
+        const form = new FormData();
+        form.append('file', file);
+        const res = await fetch('/api/admin/import/keep', { method: 'POST', body: form });
+        const data = await res.json();
+        if (!res.ok) throw data.error || 'Import failed';
+        showMsg(msg, `Imported ${data.imported} note${data.imported !== 1 ? 's' : ''}${data.skipped ? `, skipped ${data.skipped}` : ''}.`, true);
+        document.getElementById('importFile').value = '';
+      } catch (e) {
+        showMsg(msg, typeof e === 'string' ? e : 'Import failed.', false);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Import';
+      }
+    });
+
+    async function loadUsers() {
+      const users = await api('GET', '/api/admin/users');
+      if (users) renderUsers(users);
+    }
+
+    document.getElementById('createBtn').addEventListener('click', async () => {
+      const username = document.getElementById('newUsername').value.trim();
+      const password = document.getElementById('newPassword').value;
+      const is_admin = document.getElementById('newIsAdmin').checked;
+      const msg = document.getElementById('createMsg');
+      try {
+        await api('POST', '/api/admin/users', { username, password, is_admin });
+        document.getElementById('newUsername').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('newIsAdmin').checked = false;
+        showMsg(msg, 'User created.', true);
+        loadUsers();
+      } catch (e) {
+        showMsg(msg, e, false);
+      }
+    });
+
+    document.getElementById('userTable').addEventListener('click', async e => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const id = parseInt(btn.dataset.id);
+      const action = btn.dataset.action;
+
+      if (action === 'role') {
+        const isAdmin = btn.dataset.admin === '1';
+        const label = isAdmin ? 'demote this user from admin?' : 'make this user an admin?';
+        if (!confirm(`Are you sure you want to ${label}`)) return;
+        try {
+          await api('PUT', `/api/admin/users/${id}/role`, { is_admin: !isAdmin });
+          loadUsers();
+        } catch (e) { alert(e); }
+      }
+
+      if (action === 'delete') {
+        if (!confirm('Delete this user? Their notes will also be deleted.')) return;
+        try {
+          await api('DELETE', `/api/admin/users/${id}`);
+          loadUsers();
+        } catch (e) { alert(e); }
+      }
+
+      if (action === 'reset') {
+        const form = document.getElementById(`reset-${id}`);
+        form.style.display = form.style.display === 'block' ? 'none' : 'block';
+      }
+
+      if (action === 'save-reset') {
+        const password = document.getElementById(`resetPw-${id}`).value;
+        const msg = document.getElementById(`resetMsg-${id}`);
+        try {
+          await api('PUT', `/api/admin/users/${id}/password`, { password });
+          document.getElementById(`resetPw-${id}`).value = '';
+          showMsg(msg, 'Password updated.', true);
+        } catch (e) {
+          showMsg(msg, e, false);
+        }
+      }
+    });
+
+    (async () => {
+      const me = await api('GET', '/api/auth/me');
+      if (!me) return;
+      if (!me.is_admin) { window.location = '/'; return; }
+      if (me.dark_mode) document.body.classList.add('dark');
+      currentUserId = me.id;
+      document.getElementById('headerUsername').textContent = me.username;
+      loadUsers();
+    })();
+  </script>
+</body>
+</html>

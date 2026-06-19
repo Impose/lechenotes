@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Lechenotes">
+  <title>Lechenotes</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png">
+  <link rel="stylesheet" href="/style.css?v=26">
+</head>
+<body>
+  <header class="header">
+    <button class="menu-btn" id="menuBtn">&#9776;</button>
+    <div class="header-logo">Leche<span>notes</span></div>
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Search notes..." autocomplete="off">
+    </div>
+    <!-- Mobile search overlay -->
+    <div class="mobile-search-overlay" id="mobileSearchOverlay">
+      <input type="text" id="mobileSearchInput" placeholder="Search notes..." autocomplete="off">
+      <button class="mobile-search-close" id="mobileSearchClose">✕</button>
+    </div>
+    <div class="header-right">
+      <span id="headerUsername"></span>
+      <button class="mobile-search-btn" id="mobileSearchBtn" title="Search">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      </button>
+      <a class="admin-link" id="adminLink" href="/admin.html" title="Admin" style="display:none">⚙</a>
+      <button class="dark-toggle" id="darkToggle" title="Toggle dark mode">☾</button>
+      <button class="logout-btn" id="logoutBtn">Sign out</button>
+      <!-- Mobile account menu -->
+      <div class="acct-wrap" id="acctWrap">
+        <button class="acct-btn" id="acctBtn" title="Account">
+          <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+        </button>
+        <div class="acct-dropdown" id="acctDropdown">
+          <div class="acct-username" id="acctUsername"></div>
+          <div class="acct-divider"></div>
+          <button class="acct-item" id="acctDarkToggle">
+            <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+            Dark mode
+            <span class="acct-dark-badge" id="acctDarkBadge"></span>
+          </button>
+          <a class="acct-item" id="acctAdminLink" href="/admin.html" style="display:none">
+            <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.488.488 0 0 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.57 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.21.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            Settings
+          </a>
+          <button class="acct-item acct-signout" id="acctSignout">
+            <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            Sign out
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar" id="sidebar">
+      <ul class="nav-list">
+        <li class="nav-item active" data-view="notes">
+          <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          Notes
+        </li>
+        <li class="nav-item" data-view="archive">
+          <svg viewBox="0 0 24 24"><path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z"/></svg>
+          Archive
+        </li>
+        <li class="nav-item" data-view="trash">
+          <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          Trash
+        </li>
+      </ul>
+      <div class="nav-divider"></div>
+      <div class="nav-section-title">Labels</div>
+      <ul class="nav-list" id="labelNav"></ul>
+      <button class="new-label-btn" id="newLabelBtn">+ New label</button>
+    </nav>
+
+    <main class="main" id="main">
+      <div class="create-bar" id="createBar">
+        <input type="text" id="quickTitle" placeholder="Take a note..." readonly>
+        <div class="create-actions" id="createActions" style="display:none">
+          <button class="create-checklist-btn" id="createChecklistBtn">&#9745; List</button>
+          <button class="create-save-btn" id="createSaveBtn">Close</button>
+        </div>
+      </div>
+
+      <div id="pinnedSection" style="display:none">
+        <div class="section-label">Pinned</div>
+        <div class="notes-grid" id="pinnedGrid"></div>
+      </div>
+
+      <div id="othersSection">
+        <div class="section-label" id="othersLabel" style="display:none">Others</div>
+        <div class="notes-grid" id="notesGrid"></div>
+      </div>
+
+      <div class="empty-state" id="emptyState" style="display:none">
+        <svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+        <p>No notes yet</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Note editor modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <input type="text" class="modal-title" id="modalTitle" placeholder="Title">
+      <textarea class="modal-body" id="modalBody" placeholder="Add a note..."></textarea>
+      <ul class="modal-items" id="modalItems"></ul>
+      <div class="modal-add-item" id="modalAddItemRow">
+        <button class="add-item-btn" id="addItemBtn">+ List item</button>
+      </div>
+      <div class="modal-footer">
+        <div class="modal-footer-left">
+          <button class="footer-btn color-btn" id="colorBtn" title="Change color">
+            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          </button>
+          <button class="footer-btn label-btn" id="labelBtn" title="Labels">
+            <svg viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg>
+          </button>
+          <button class="footer-btn share-btn" id="shareBtn" title="Share">
+            <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+          </button>
+        </div>
+        <div class="modal-footer-right">
+          <button class="footer-btn pin-btn" id="pinBtn" title="Pin note">
+            <svg viewBox="0 0 24 24"><path d="M17 4v7l2 3H5l2-3V4h10m0-2H7c-.55 0-1 .45-1 1v7.81L4 14v2h7v5h2v-5h7v-2l-2-3.19V3c0-.55-.45-1-1-1z"/></svg>
+          </button>
+          <button class="footer-btn archive-btn" id="archiveBtn" title="Archive">
+            <svg viewBox="0 0 24 24"><path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z"/></svg>
+          </button>
+          <button class="footer-btn delete-btn" id="deleteBtn" title="Delete">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+          <button class="modal-close-btn" id="modalCloseBtn">Close</button>
+        </div>
+      </div>
+
+      <!-- Color picker -->
+      <div class="color-picker" id="colorPicker">
+        <button class="color-swatch" data-color="default" title="Default" style="background:#fff; border: 2px solid #dadce0"></button>
+        <button class="color-swatch" data-color="red"     title="Red"     style="background:#f28b82"></button>
+        <button class="color-swatch" data-color="orange"  title="Orange"  style="background:#fbbc04"></button>
+        <button class="color-swatch" data-color="yellow"  title="Yellow"  style="background:#fff475"></button>
+        <button class="color-swatch" data-color="green"   title="Green"   style="background:#ccff90"></button>
+        <button class="color-swatch" data-color="teal"    title="Teal"    style="background:#a7ffeb"></button>
+        <button class="color-swatch" data-color="blue"    title="Blue"    style="background:#cbf0f8"></button>
+        <button class="color-swatch" data-color="purple"  title="Purple"  style="background:#d7aefb"></button>
+        <button class="color-swatch" data-color="pink"    title="Pink"    style="background:#fdcfe8"></button>
+      </div>
+
+      <!-- Label picker -->
+      <div class="label-picker" id="labelPicker">
+        <div class="label-picker-title">Labels</div>
+        <div id="labelPickerList"></div>
+      </div>
+
+      <!-- Share panel -->
+      <div class="share-panel" id="sharePanel">
+        <div class="share-panel-title">Share with</div>
+        <div id="sharePanelList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/sortable.min.js?v=26"></script>
+  <script src="/app.js?v=26"></script>
+</body>
+</html>
