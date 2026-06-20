@@ -15,7 +15,7 @@ Built for small groups: family, housemates, a small team. Admin-controlled accou
 - Real-time sync between users (2-second polling)
 - Per-user dark mode, stored server-side
 - Admin panel — create, delete, promote/demote users and reset passwords
-- Mobile-friendly — optimised touch targets, scroll lock, single-tap to edit
+- Mobile-friendly — optimised touch targets, scroll lock, single-tap to edit, keyboard-aware modal that stays above the iOS keyboard
 - No external database — SQLite, single file on disk
 
 ---
