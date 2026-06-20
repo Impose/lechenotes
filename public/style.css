@@ -435,6 +435,7 @@ body.dark .trash-delete-btn:hover { background: rgba(255,255,255,0.08); }
 .modal {
   background: var(--surface);
   border-radius: 12px;
+  overflow: hidden;
   width: 100%;
   max-width: 560px;
   max-height: calc(100dvh - 32px);
@@ -446,8 +447,6 @@ body.dark .trash-delete-btn:hover { background: rgba(255,255,255,0.08); }
 .modal-header {
   flex-shrink: 0;
   border-bottom: 1px solid var(--border);
-  border-radius: 12px 12px 0 0;
-  background: inherit;
 }
 .modal-scroll {
   flex: 1;
