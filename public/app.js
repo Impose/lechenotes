@@ -149,6 +149,7 @@ async function setView(view) {
   renderSidebar();
   renderGrid();
   document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarBackdrop').classList.remove('open');
 }
 
 // --- Trash ---
@@ -371,6 +372,11 @@ function openModal(noteId) {
   updateModalButtons();
 
   document.getElementById('modalOverlay').classList.add('open');
+  const scrollY = window.scrollY;
+  document.body.dataset.scrollY = scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollY}px`;
+  document.body.style.width = '100%';
   document.body.style.overflow = 'hidden';
 
   closePickers();
@@ -447,7 +453,10 @@ function renderModalItems() {
 
   // Text edit events
   list.querySelectorAll('.item-text').forEach(input => {
-    input.addEventListener('touchend', () => input.focus());
+    let didScroll = false;
+    input.addEventListener('touchstart', () => { didScroll = false; }, { passive: true });
+    input.addEventListener('touchmove', () => { didScroll = true; }, { passive: true });
+    input.addEventListener('touchend', () => { if (!didScroll) input.focus(); });
     input.addEventListener('blur', async () => {
       const itemId = parseInt(input.dataset.itemId);
       await PUT(`/api/notes/${state.activeNoteId}/items/${itemId}`, { text: input.value });
@@ -549,7 +558,12 @@ async function closeModal() {
   state.activeNote   = null;
   if (state.itemSortable) { state.itemSortable.destroy(); state.itemSortable = null; }
   document.getElementById('modalOverlay').classList.remove('open');
+  const scrollY = parseInt(document.body.dataset.scrollY || '0');
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
   document.body.style.overflow = '';
+  window.scrollTo(0, scrollY);
   closePickers();
 }
 
@@ -580,9 +594,15 @@ function bindEvents() {
   document.getElementById('acctSignout').addEventListener('click', doLogout);
 
   // Mobile menu
+  const closeSidebar = () => {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarBackdrop').classList.remove('open');
+  };
   document.getElementById('menuBtn').addEventListener('click', () => {
-    document.getElementById('sidebar').classList.toggle('open');
+    const open = document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarBackdrop').classList.toggle('open', open);
   });
+  document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
 
   // Search (desktop)
   document.getElementById('searchInput').addEventListener('input', e => {

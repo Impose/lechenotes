@@ -859,6 +859,8 @@ body.dark .create-bar { box-shadow: 0 1px 4px rgba(0,0,0,0.4); }
     box-shadow: 2px 0 8px rgba(0,0,0,0.1);
   }
   .sidebar.open { transform: translateX(0); }
+  .sidebar-backdrop { display: none; position: fixed; inset: 0; z-index: 149; background: rgba(0,0,0,0.4); }
+  .sidebar-backdrop.open { display: block; }
   .main { margin-left: 0; padding: 16px; }
   .notes-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
   #notesGrid { column-width: unset; columns: 2; column-gap: 8px; }
