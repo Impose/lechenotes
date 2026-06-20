@@ -357,14 +357,13 @@ function noteCard(note) {
 
 const MODAL_MARGIN = 80; // px reserved above and below modal
 
-// Keep modal pinned to visual viewport and focused input visible when keyboard opens
+// Keep modal within visual viewport when keyboard opens; overlay stays inset:0 (full screen)
 function syncModalToViewport() {
   if (!window.visualViewport) return;
   const vv = window.visualViewport;
   const overlay = document.getElementById('modalOverlay');
-  overlay.style.top = vv.offsetTop + 'px';
-  overlay.style.height = vv.height + 'px';
-  overlay.style.bottom = 'auto';
+  overlay.style.paddingTop    = (vv.offsetTop + MODAL_MARGIN) + 'px';
+  overlay.style.paddingBottom = MODAL_MARGIN + 'px';
   document.getElementById('modal').style.maxHeight = (vv.height - MODAL_MARGIN * 2) + 'px';
   const focused = document.activeElement;
   if (focused && overlay.contains(focused)) {
@@ -584,9 +583,8 @@ async function closeModal() {
   if (state.itemSortable) { state.itemSortable.destroy(); state.itemSortable = null; }
   const overlay = document.getElementById('modalOverlay');
   overlay.classList.remove('open');
-  overlay.style.top = '';
-  overlay.style.height = '';
-  overlay.style.bottom = '';
+  overlay.style.paddingTop = '';
+  overlay.style.paddingBottom = '';
   document.getElementById('modal').style.maxHeight = '';
   if (window.visualViewport) {
     window.visualViewport.removeEventListener('scroll', syncModalToViewport);
