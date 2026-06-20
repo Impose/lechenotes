@@ -355,6 +355,8 @@ function noteCard(note) {
   `;
 }
 
+const MODAL_MARGIN = 80; // px reserved above and below modal
+
 // Keep modal pinned to visual viewport and focused input visible when keyboard opens
 function syncModalToViewport() {
   if (!window.visualViewport) return;
@@ -363,6 +365,7 @@ function syncModalToViewport() {
   overlay.style.top = vv.offsetTop + 'px';
   overlay.style.height = vv.height + 'px';
   overlay.style.bottom = 'auto';
+  document.getElementById('modal').style.maxHeight = (vv.height - MODAL_MARGIN * 2) + 'px';
   const focused = document.activeElement;
   if (focused && overlay.contains(focused)) {
     focused.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -389,6 +392,7 @@ function openModal(noteId) {
   if (window.visualViewport) {
     window.visualViewport.addEventListener('scroll', syncModalToViewport);
     window.visualViewport.addEventListener('resize', syncModalToViewport);
+    syncModalToViewport();
   }
   const scrollY = window.scrollY;
   document.body.dataset.scrollY = scrollY;
@@ -583,6 +587,7 @@ async function closeModal() {
   overlay.style.top = '';
   overlay.style.height = '';
   overlay.style.bottom = '';
+  document.getElementById('modal').style.maxHeight = '';
   if (window.visualViewport) {
     window.visualViewport.removeEventListener('scroll', syncModalToViewport);
     window.visualViewport.removeEventListener('resize', syncModalToViewport);
