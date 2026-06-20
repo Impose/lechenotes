@@ -355,6 +355,13 @@ function noteCard(note) {
   `;
 }
 
+// Counteract iOS panning the visual viewport when keyboard opens inside a fixed overlay
+function syncModalToViewport() {
+  if (!window.visualViewport) return;
+  document.getElementById('modalOverlay').style.transform =
+    `translateY(${window.visualViewport.offsetTop}px)`;
+}
+
 // --- Modal ---
 function openModal(noteId) {
   const note = state.notes.find(n => n.id === noteId);
@@ -372,6 +379,10 @@ function openModal(noteId) {
   updateModalButtons();
 
   document.getElementById('modalOverlay').classList.add('open');
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('scroll', syncModalToViewport);
+    window.visualViewport.addEventListener('resize', syncModalToViewport);
+  }
   const scrollY = window.scrollY;
   document.body.dataset.scrollY = scrollY;
   document.body.style.position = 'fixed';
@@ -558,6 +569,11 @@ async function closeModal() {
   state.activeNote   = null;
   if (state.itemSortable) { state.itemSortable.destroy(); state.itemSortable = null; }
   document.getElementById('modalOverlay').classList.remove('open');
+  document.getElementById('modalOverlay').style.transform = '';
+  if (window.visualViewport) {
+    window.visualViewport.removeEventListener('scroll', syncModalToViewport);
+    window.visualViewport.removeEventListener('resize', syncModalToViewport);
+  }
   const scrollY = parseInt(document.body.dataset.scrollY || '0');
   document.body.style.position = '';
   document.body.style.top = '';
