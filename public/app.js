@@ -438,6 +438,9 @@ function renderModalItems() {
     delayOnTouchOnly: true,
     ghostClass: 'sortable-ghost',
     chosenClass: 'sortable-chosen',
+    scroll: document.getElementById('modalScroll'),
+    scrollSensitivity: 60,
+    scrollSpeed: 12,
     onEnd: async () => {
       const order = [...list.querySelectorAll('.modal-item[data-item-id]')]
         .map(el => parseInt(el.dataset.itemId))
