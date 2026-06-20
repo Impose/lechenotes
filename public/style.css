@@ -121,6 +121,16 @@ body {
   min-height: calc(100vh - var(--header-h));
 }
 
+/* Sidebar backdrop (mobile) */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 149;
+  background: rgba(0,0,0,0.4);
+}
+.sidebar-backdrop.open { display: block; }
+
 /* Sidebar */
 .sidebar {
   width: var(--sidebar-w);
@@ -859,8 +869,6 @@ body.dark .create-bar { box-shadow: 0 1px 4px rgba(0,0,0,0.4); }
     box-shadow: 2px 0 8px rgba(0,0,0,0.1);
   }
   .sidebar.open { transform: translateX(0); }
-  .sidebar-backdrop { display: none; position: fixed; inset: 0; z-index: 149; background: rgba(0,0,0,0.4); }
-  .sidebar-backdrop.open { display: block; }
   .main { margin-left: 0; padding: 16px; }
   .notes-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
   #notesGrid { column-width: unset; columns: 2; column-gap: 8px; }
@@ -883,6 +891,16 @@ body.dark .create-bar { box-shadow: 0 1px 4px rgba(0,0,0,0.4); }
     padding: 10px 6px;
   }
   .modal-item:hover .drag-handle { opacity: 0.4; }
+
+  /* On mobile, anchor modal to top of visual viewport so keyboard pushes it up not over it */
+  .modal-overlay {
+    align-items: flex-start;
+    padding: 8px 8px 0;
+  }
+  .modal {
+    max-height: calc(100dvh - 8px);
+    border-radius: 12px 12px 0 0;
+  }
 }
 
 @media (max-width: 400px) {
