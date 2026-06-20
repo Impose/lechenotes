@@ -355,11 +355,18 @@ function noteCard(note) {
   `;
 }
 
-// Counteract iOS panning the visual viewport when keyboard opens inside a fixed overlay
+// Keep modal pinned to visual viewport and focused input visible when keyboard opens
 function syncModalToViewport() {
   if (!window.visualViewport) return;
-  document.getElementById('modalOverlay').style.transform =
-    `translateY(${window.visualViewport.offsetTop}px)`;
+  const vv = window.visualViewport;
+  const overlay = document.getElementById('modalOverlay');
+  overlay.style.top = vv.offsetTop + 'px';
+  overlay.style.height = vv.height + 'px';
+  overlay.style.bottom = 'auto';
+  const focused = document.activeElement;
+  if (focused && overlay.contains(focused)) {
+    focused.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
 }
 
 // --- Modal ---
@@ -568,8 +575,11 @@ async function closeModal() {
   state.activeNoteId = null;
   state.activeNote   = null;
   if (state.itemSortable) { state.itemSortable.destroy(); state.itemSortable = null; }
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.getElementById('modalOverlay').style.transform = '';
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.remove('open');
+  overlay.style.top = '';
+  overlay.style.height = '';
+  overlay.style.bottom = '';
   if (window.visualViewport) {
     window.visualViewport.removeEventListener('scroll', syncModalToViewport);
     window.visualViewport.removeEventListener('resize', syncModalToViewport);
