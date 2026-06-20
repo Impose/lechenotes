@@ -428,7 +428,7 @@ body.dark .trash-delete-btn:hover { background: rgba(255,255,255,0.08); }
   z-index: 200;
   align-items: center;
   justify-content: center;
-  padding: 64px 16px;
+  padding: 128px 16px;
 }
 .modal-overlay.open { display: flex; }
 
