@@ -428,7 +428,7 @@ body.dark .trash-delete-btn:hover { background: rgba(255,255,255,0.08); }
   z-index: 200;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 32px;
 }
 .modal-overlay.open { display: flex; }
 
@@ -613,8 +613,6 @@ body.dark .modal:is(.color-red,.color-orange,.color-yellow,.color-green,.color-t
   gap: 8px;
   flex-shrink: 0;
   border-top: 1px solid var(--border);
-  border-radius: 0 0 12px 12px;
-  background: inherit;
   z-index: 1;
 }
 .modal-footer-left, .modal-footer-right {
