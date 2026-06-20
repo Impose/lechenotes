@@ -437,11 +437,21 @@ body.dark .trash-delete-btn:hover { background: rgba(255,255,255,0.08); }
   border-radius: 12px;
   width: 100%;
   max-width: 560px;
-  max-height: 90vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  max-height: calc(100dvh - 32px);
+  display: flex;
+  flex-direction: column;
   position: relative;
   box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+.modal-header {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+}
+.modal-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-height: 0;
 }
 .modal.color-red    { background: var(--note-red); }
 .modal.color-orange { background: var(--note-orange); }
@@ -601,8 +611,8 @@ body.dark .modal:is(.color-red,.color-orange,.color-yellow,.color-green,.color-t
   padding: 8px 16px 12px;
   flex-wrap: wrap;
   gap: 8px;
-  position: sticky;
-  bottom: 0;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
   background: inherit;
   z-index: 1;
 }
@@ -892,15 +902,6 @@ body.dark .create-bar { box-shadow: 0 1px 4px rgba(0,0,0,0.4); }
   }
   .modal-item:hover .drag-handle { opacity: 0.4; }
 
-  /* On mobile, anchor modal to top of visual viewport so keyboard pushes it up not over it */
-  .modal-overlay {
-    align-items: flex-start;
-    padding: 8px 8px 0;
-  }
-  .modal {
-    max-height: calc(100dvh - 8px);
-    border-radius: 12px 12px 0 0;
-  }
 }
 
 @media (max-width: 400px) {

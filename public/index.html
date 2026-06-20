@@ -10,7 +10,7 @@
   <title>Lechenotes</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png">
-  <link rel="stylesheet" href="/style.css?v=27">
+  <link rel="stylesheet" href="/style.css?v=28">
 </head>
 <body>
   <header class="header">
@@ -110,11 +110,15 @@
   <!-- Note editor modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modal">
-      <input type="text" class="modal-title" id="modalTitle" placeholder="Title">
-      <textarea class="modal-body" id="modalBody" placeholder="Add a note..."></textarea>
-      <ul class="modal-items" id="modalItems"></ul>
-      <div class="modal-add-item" id="modalAddItemRow">
-        <button class="add-item-btn" id="addItemBtn">+ List item</button>
+      <div class="modal-header">
+        <input type="text" class="modal-title" id="modalTitle" placeholder="Title">
+      </div>
+      <div class="modal-scroll" id="modalScroll">
+        <textarea class="modal-body" id="modalBody" placeholder="Add a note..."></textarea>
+        <ul class="modal-items" id="modalItems"></ul>
+        <div class="modal-add-item" id="modalAddItemRow">
+          <button class="add-item-btn" id="addItemBtn">+ List item</button>
+        </div>
       </div>
       <div class="modal-footer">
         <div class="modal-footer-left">
@@ -169,7 +173,7 @@
     </div>
   </div>
 
-  <script src="/sortable.min.js?v=27"></script>
-  <script src="/app.js?v=27"></script>
+  <script src="/sortable.min.js?v=28"></script>
+  <script src="/app.js?v=28"></script>
 </body>
 </html>
