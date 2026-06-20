@@ -613,6 +613,7 @@ body.dark .modal:is(.color-red,.color-orange,.color-yellow,.color-green,.color-t
   gap: 8px;
   flex-shrink: 0;
   border-top: 1px solid var(--border);
+  border-radius: 0 0 12px 12px;
   background: inherit;
   z-index: 1;
 }
