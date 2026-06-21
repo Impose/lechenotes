@@ -509,6 +509,9 @@ function renderModalItems() {
       renderModalItems();
     });
   });
+
+  const hasItems = (note.items || []).length > 0;
+  document.getElementById('modalBody').classList.toggle('no-items', !hasItems);
 }
 
 function updateModalButtons() {

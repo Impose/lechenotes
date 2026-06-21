@@ -452,7 +452,7 @@ body.dark .trash-delete-btn:hover { background: rgba(255,255,255,0.08); }
   flex: 1;
   overflow-y: auto;
   overscroll-behavior: contain;
-  min-height: 200px;
+  min-height: 0;
 }
 .modal.color-red    { background: var(--note-red); }
 .modal.color-orange { background: var(--note-orange); }
@@ -498,6 +498,9 @@ body.dark .modal:is(.color-red,.color-orange,.color-yellow,.color-green,.color-t
   color: var(--text);
   font-family: inherit;
   line-height: 1.5;
+}
+.modal-body.no-items {
+  min-height: 50dvh;
 }
 
 /* Modal items */
